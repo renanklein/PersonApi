@@ -22,6 +22,7 @@ namespace PersonAPI.Repositories
         public async Task Create(Person person)
         {
             await this.PersonCollection.InsertOneAsync(person);
+
         }
 
         public async Task Delete(string personId)

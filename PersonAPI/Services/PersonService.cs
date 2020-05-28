@@ -5,6 +5,7 @@ using PersonAPI.Models.Response;
 using PersonAPI.Repositories;
 using PersonAPI.Repositories.Interfaces;
 using PersonAPI.Services.Interfaces;
+using System;
 using System.Threading.Tasks;
 
 namespace PersonAPI.Services
@@ -20,9 +21,14 @@ namespace PersonAPI.Services
             this.Mapper = mapper;
         }
 
-        public async Task CreatePerson(PersonRequest personRequest)
+        public async Task<PersonResponse> CreatePerson(PersonRequest personRequest)
         {
+            personRequest.Id = DateTime.Now.Ticks.ToString("x");
             await this.PersonRepository.Create(Mapper.Map<Person>(personRequest));
+
+            var person = await this.PersonRepository.Get(personRequest.Id);
+
+            return Mapper.Map<PersonResponse>(person);
         }
 
         public async Task DeletePerson(string personId)
@@ -44,10 +50,11 @@ namespace PersonAPI.Services
 
         public async Task<PersonResponse> PutPerson(string personId, PersonRequest personRequest)
         {
+            personRequest.Id = personId;
             var person = Mapper.Map<Person>(personRequest);
             await this.PersonRepository.Update(personId, person);
 
-            var updatedPerson = this.PersonRepository.Get(personId);
+            var updatedPerson = await this.PersonRepository.Get(personId);
             return Mapper.Map<PersonResponse>(updatedPerson);
         }
     }

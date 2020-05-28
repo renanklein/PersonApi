@@ -16,9 +16,9 @@ namespace PersonAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetPerson([FromRoute] string personId)
+        public async Task<IActionResult> GetPerson([FromRoute] string id)
         {
-            var result = await this.PersonService.GetPerson(personId);
+            var result = await this.PersonService.GetPerson(id);
             if(result == null)
             {
                 return NotFound("Person not found");
@@ -28,17 +28,17 @@ namespace PersonAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreatePerson([FromRoute] PersonRequest personRequest)
+        public async Task<IActionResult> CreatePerson([FromBody] PersonRequest personRequest)
         {
-            await this.PersonService.CreatePerson(personRequest);
+            var newPerson = await this.PersonService.CreatePerson(personRequest);
 
-            return Ok();
+            return Ok(newPerson);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdatePerson([FromRoute] string personId, [FromBody] PersonRequest personRequest)
+        public async Task<IActionResult> UpdatePerson([FromRoute] string id, [FromBody] PersonRequest personRequest)
         {
-            var result = await this.PersonService.PutPerson(personId, personRequest);
+            var result = await this.PersonService.PutPerson(id, personRequest);
 
             if(result == null)
             {
@@ -49,9 +49,9 @@ namespace PersonAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePerson([FromRoute] string personId)
+        public async Task<IActionResult> DeletePerson([FromRoute] string id)
         {
-            await this.PersonService.DeletePerson(personId);
+            await this.PersonService.DeletePerson(id);
 
             return Ok();
         }
