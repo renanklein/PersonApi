@@ -1,0 +1,33 @@
+version: '3.8'
+
+networks:
+  person-network:
+    driver: bridge
+
+services:
+  person-api:
+    image: person-api:latest
+    build:
+      context: ./PersonAPI
+      dockerfile: ./Dockerfile
+    ports:
+      - "8010:8010"
+    networks:
+      - person-network
+
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123mudar...
+
+    ports:
+      - 27017:27017
+
+    networks: 
+      - person-network
+
+      
+      
