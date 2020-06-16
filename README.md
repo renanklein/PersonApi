@@ -1,2 +1,2 @@
 # PersonApi
-An API for traning purpose
+An API for training purpose
