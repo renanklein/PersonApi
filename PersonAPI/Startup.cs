@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +22,7 @@ namespace PersonAPI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.SetupSwagger();
             services.SetupMapper();
             services.SetupJsonSerializer();
             services.SetupMongo(this.Configuration);
@@ -30,13 +30,18 @@ namespace PersonAPI
             services.AddScoped<IPersonService, PersonService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options => 
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "PersonAPI V1");
+            });
 
             app.UseRouting();
 
