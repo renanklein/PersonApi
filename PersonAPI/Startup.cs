@@ -41,7 +41,7 @@ namespace PersonAPI
             app.UseSwaggerUI(options => 
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "PersonAPI V1");
-                options.RoutePrefix = string.Empty;
+                options.RoutePrefix = "api-docs/swagger";
             });
 
             app.UseRouting();

@@ -2,6 +2,7 @@
 using PersonAPI.Models;
 using PersonAPI.Models.Request;
 using PersonAPI.Services.Interfaces;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PersonAPI.Controllers
@@ -21,7 +22,7 @@ namespace PersonAPI.Controllers
         {
             var result = await this.PersonService.ListPersons(filter);
 
-            if(result == null)
+            if(result.Count() == 0)
             {
                 return BadRequest("There's no person");
             }
