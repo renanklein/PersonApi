@@ -6,6 +6,8 @@ using PersonAPI.Repositories;
 using PersonAPI.Repositories.Interfaces;
 using PersonAPI.Services.Interfaces;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PersonAPI.Services
@@ -41,6 +43,13 @@ namespace PersonAPI.Services
             var result = await this.PersonRepository.Get(personId);
 
             return Mapper.Map<PersonResponse>(result);
+        }
+
+        public async Task<IEnumerable<PersonResponse>> ListPersons(PersonFilter filter)
+        {
+            var result = await this.PersonRepository.List(filter);
+
+            return Mapper.Map<List<PersonResponse>>(result);
         }
 
         public Task<PersonResponse> PatchPerson(string personId, PersonRequest personRequest)

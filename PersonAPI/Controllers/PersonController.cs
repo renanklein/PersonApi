@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PersonAPI.Models;
 using PersonAPI.Models.Request;
 using PersonAPI.Services.Interfaces;
 using System.Threading.Tasks;
@@ -13,6 +14,19 @@ namespace PersonAPI.Controllers
         public PersonController(IPersonService personService)
         {
             this.PersonService = personService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListPersons([FromQuery] PersonFilter filter)
+        {
+            var result = await this.PersonService.ListPersons(filter);
+
+            if(result == null)
+            {
+                return BadRequest("There's no person");
+            }
+
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

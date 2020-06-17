@@ -3,8 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace PersonAPI.Models
-{
-    [JsonConverter(typeof(DocumentType))]
+{ 
     public enum DocumentType
     {
         [Display(Name = "None")]

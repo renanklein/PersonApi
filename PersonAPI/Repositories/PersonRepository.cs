@@ -1,7 +1,12 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Logging;
+using MongoDB.Bson;
+using MongoDB.Driver;
 using PersonAPI.Models;
 using PersonAPI.Repositories.Interfaces;
 using PersonAPI.Settings;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PersonAPI.Repositories
@@ -35,6 +40,13 @@ namespace PersonAPI.Repositories
             var findResult = await this.PersonCollection.FindAsync<Person>(person => person.Id == personId);
                                 
             return findResult.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<Person>> List(PersonFilter filter)
+        {
+            var result = await this.PersonCollection.FindAsync<Person>(p => true);
+
+            return result.ToList().Skip(int.Parse(filter.Offset)).Take(int.Parse(filter.Limit));
         }
 
         public async Task Update(string personId, Person person)
