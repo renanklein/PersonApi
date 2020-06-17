@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 
 namespace PersonAPI.Extensions
 {
@@ -20,9 +22,15 @@ namespace PersonAPI.Extensions
                         Url = new Uri("https://github.com/renanklein")
                     }
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
+
+
         }
     }
 }
