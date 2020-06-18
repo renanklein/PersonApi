@@ -25,6 +25,7 @@ namespace PersonAPI
             services.SetupSwagger();
             services.SetupMapper();
             services.SetupJsonSerializer();
+            services.SetupFluentValidation();
             services.SetupMongo(this.Configuration);
             services.AddScoped<IPersonRepository, PersonRepository>();
             services.AddScoped<IPersonService, PersonService>();

@@ -71,7 +71,7 @@ namespace PersonAPI.Controllers
         {
             var newPerson = await this.PersonService.CreatePerson(personRequest);
 
-            return Created("",newPerson);
+            return Created("", newPerson);
         }
 
         /// <summary>
