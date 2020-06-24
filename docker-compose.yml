@@ -1,9 +1,4 @@
-version: '3.8'
-
-networks:
-  person-network:
-    driver: bridge
-
+version: '3'
 services:
   person-api:
     image: person-api:latest
@@ -28,6 +23,13 @@ services:
 
     networks: 
       - person-network
+
+networks:
+  person-network:
+    driver: bridge
+    ipam:
+      driver: default
+
 
       
       

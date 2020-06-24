@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using MongoDB.Driver;
 using PersonAPI.Models;
 using PersonAPI.Repositories.Interfaces;
 using PersonAPI.Settings;
@@ -44,6 +45,19 @@ namespace PersonAPI.Repositories
             var result = await this.PersonCollection.FindAsync<Person>(p => true);
 
             return result.ToList().Skip(int.Parse(filter.Offset)).Take(int.Parse(filter.Limit));
+        }
+
+        public async Task<Person> Patch(string personId, JsonPatchDocument<Person> person)
+        {
+            var filter = Builders<Person>.Filter.Where(p => p.Id == personId);
+
+            var result = await this.PersonCollection.FindAsync<Person>(filter);
+            var personToPatch = result.FirstOrDefault();
+            person.ApplyTo(personToPatch);
+
+            var moda = await this.PersonCollection.ReplaceOneAsync(filter, personToPatch);
+
+            return personToPatch;
         }
 
         public async Task Update(string personId, Person person)

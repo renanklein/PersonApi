@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using PersonAPI.Models;
 using PersonAPI.Models.Request;
@@ -95,6 +96,27 @@ namespace PersonAPI.Controllers
             }
 
             return Ok(result); 
+        }
+        
+        /// <summary>
+        /// Atualiza as propriedades de uma pessoa através de recurso JsonPatch do .NET core
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PatchPerson([FromRoute] string id, [FromBody] JsonPatchDocument<PersonRequest> request)
+        {
+            var result = await this.PersonService.PatchPerson(id, request);
+
+            if(result == null)
+            {
+                return BadRequest("There's no person with this id");
+            }
+
+            return Ok(result);
         }
 
         /// <summary>

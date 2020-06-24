@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using PersonAPI.Models;
 using PersonAPI.Models.Request;
 using PersonAPI.Models.Response;
-using PersonAPI.Repositories;
 using PersonAPI.Repositories.Interfaces;
 using PersonAPI.Services.Interfaces;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -52,9 +51,13 @@ namespace PersonAPI.Services
             return Mapper.Map<List<PersonResponse>>(result);
         }
 
-        public Task<PersonResponse> PatchPerson(string personId, PersonRequest personRequest)
+        public async Task<PersonResponse> PatchPerson(string personId, JsonPatchDocument<PersonRequest> request)
         {
-            throw new System.NotImplementedException();
+            var person = Mapper.Map<JsonPatchDocument<Person>>(request);
+
+            var result = await this.PersonRepository.Patch(personId, person);
+
+            return Mapper.Map<PersonResponse>(result);
         }
 
         public async Task<PersonResponse> PutPerson(string personId, PersonRequest personRequest)
